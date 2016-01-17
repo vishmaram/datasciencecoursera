@@ -1,5 +1,5 @@
 # Getting data from MySQL
-
+rm(list = ls())
 install.packages("RMySQL")
 
 library(RMySQL)
@@ -9,6 +9,7 @@ result <- dbGetQuery(dbConn,"Show Databases;")
 dbDisconnect(dbConn) # Disconnect after the dbconn is ues
 
 result # When we print it will give list of databases
+
 
 # connect wfmsweden database
 dbConn <- dbConnect(MySQL(),user="root",password ="solarsys",host="localhost", db="wfmmcdsweden")
