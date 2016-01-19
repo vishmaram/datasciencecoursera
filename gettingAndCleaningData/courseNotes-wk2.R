@@ -1,6 +1,7 @@
 # Getting data from MySQL
 rm(list = ls())
 install.packages("RMySQL")
+setwd("./gettingAndCleaningData")
 
 library(RMySQL)
 
@@ -62,6 +63,7 @@ biocLite("rhdf5")
 
 library(rhdf5)
 
+setwd("data/")
 
 # to create h5 file returns true or not
  h5createFile("sampleH5File.h5")
@@ -101,3 +103,69 @@ library(rhdf5)
  readA <- h5read("sampleH5File.h5","Employee/A")
  readA
  
+ H5close()
+ 
+ #Reading data from the web
+ 
+ #using readlines()
+ con <- url("http://scholar.google.com/citations?user=HI-I6C0AAAAJ&hl=en")
+ htmlCode <- readLines(con)
+ close(con)
+ htmlCode
+ 
+ #parsing with XML
+ library(XML)
+ url <- "http://scholar.google.com/citations?user=HI-I6C0AAAAJ&hl=en"
+ html <- htmlTreeParse(url,useInternalNodes = T)
+ xpathSApply(html,"//title",xmlValue)
+ xpathSApply(html,"//td[@id='col-citedby']",xmlValue)
+ 
+ #httr package
+ library(httr)
+ html2 <- GET(url=url)
+ content2 <- content(html2,as="text")
+ parsedHtml <- htmlParse(content2,asText = T)
+ xpathSApply(parsedHtml,"//title",xmlValue)
+ 
+ # Accessing websites using passwords
+ pgl = GET("http://httpbin.org/basic-auth/user/passwd")
+ pgl
+ 
+ pgl2 = GET("http://httpbin.org/basic-auth/user/passwd",
+           authenticate("user","passwd"))
+ pgl2
+ pgl2$content
+ 
+ 
+ #using handles
+ google <- handle("http://google.com")
+ pg1 <- GET(handle=google,path = "/")
+ pg1
+ pg2 <- GET(handle=google,path ="search")
+ pg2
+ 
+ #API
+ install.packages("base64enc")
+ library(jsonlite)
+ myapp <- oauth_app("testApp",key="sx7CFggdXJq6tUUKjN9TF4BKK",
+                    secret = "blk2rZHf5jFpiK44tXw4bpcnM1hD9eSB6KEcimMMu2dZ2Z1kHk")
+ sig<- sign_oauth1.0(myapp,token="154448264-WEGVoKjuaHy1yQMgcYxxfJZ2MWiJaviO8r7JI7cM",
+                     token_secret = "PEthGUicSO0pSzgXBTjxAxX8DV5SouMZ33RZCWsMMpWT9")
+ homeTL <- GET("https://api.twitter.com/1.1/statuses/home_timeline.json",sig)
+json1 <- content(homeTL) 
+json1
+json2 <- jsonlite::fromJSON(toJSON(json1))
+json2
+
+#httr package
+#httr package allows GET, POST, PUT, DELETE requests if you are authorized
+#We can authenticate using username and password
+# Most modern APIs use something like oauth
+#httr works well with Facebook, Google, Twitter, Github, etc.
+
+#PDF reading data from other sources contains follwoing infromation
+# How to read data from foriegn source, e.g. minitab,S,SAS,SPSS,Stata,systat,octave etc.,
+# Sources for other database packages
+# Pacakages for Reading images
+# Reading GIS data
+# Reading music data
