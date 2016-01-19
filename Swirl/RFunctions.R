@@ -220,4 +220,24 @@ isTRUE(6>4)
 
 Sys.Date() # returns date in "2016-01-19" format
 
+# to get the funtion source code just type funcion name without paranthesis
 
+# %% operator is used for finding the remainder
+7 %% 2
+
+# R can partially match the argument. If the argument name is "divisor" 
+#and we entered "div = 2" it works fine
+
+# sd is the function for standard deviation
+?sd
+
+
+# ... is used in  the args to mention that we can give as many arguments as possible
+# we can access the list of arguments by  below
+# argsList <- list(...)
+
+# We can create our own binary operator using %opertor_symbol%
+"%p%" <- function(left,right){ # Remember to add arguments!
+  paste(left,right)
+}
+"This" %p% "is" %p% "awesome"
